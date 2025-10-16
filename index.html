@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mr Games - 500+ Unblocked Games</title>
     <link rel="icon" type="image/x-icon" href="https://static.photos/gaming/200x200/1">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <style>
@@ -261,9 +262,13 @@
             </div>
         </div>
     </section>
+    <!-- Weather Effect -->
+    <div id="weather-container" class="fixed inset-0 pointer-events-none hidden">
+        <div class="rain"></div>
+    </div>
 
     <!-- Game Iframe Modal -->
-    <div id="game-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center p-4">
+<div id="game-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-lg w-full max-w-4xl max-h-screen overflow-hidden">
             <div class="flex justify-between items-center bg-indigo-600 text-white p-4">
                 <h3 id="modal-title" class="text-xl font-bold">Game Title</h3>
@@ -350,9 +355,89 @@
             document.getElementById('game-modal').classList.add('hidden');
             document.getElementById('game-iframe').src = '';
         });
-
         // Initialize feather icons
         feather.replace();
+
+        // Settings menu toggle
+        document.getElementById('settings-btn').addEventListener('click', function() {
+            document.getElementById('settings-menu').classList.toggle('hidden');
+        });
+
+        // Background changer
+        document.getElementById('bg-change').addEventListener('click', function(e) {
+            e.preventDefault();
+            const colors = ['bg-gray-100', 'bg-blue-50', 'bg-purple-50', 'bg-indigo-50'];
+            const currentBg = document.body.className.match(/bg-\w+-\d+/);
+            let newBg = colors[Math.floor(Math.random() * colors.length)];
+            
+            if (currentBg) {
+                document.body.classList.remove(currentBg[0]);
+            }
+            document.body.classList.add(newBg);
+        });
+
+        // Weather effect toggle
+        let weatherActive = false;
+        document.getElementById('weather-effect').addEventListener('click', function(e) {
+            e.preventDefault();
+            weatherActive = !weatherActive;
+            document.getElementById('weather-container').classList.toggle('hidden');
+            
+            if (weatherActive) {
+                createRain();
+            }
+        });
+
+        function createRain() {
+            const container = document.querySelector('.rain');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 100; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'raindrop';
+                drop.style.left = `${Math.random() * 100}%`;
+                drop.style.top = `${Math.random() * -100}%`;
+                drop.style.animationDuration = `${0.5 + Math.random() * 1}s`;
+                drop.style.animationDelay = `${Math.random() * 2}s`;
+                container.appendChild(drop);
+            }
+        }
+
+        // Real game links
+        const games = {
+            'Slope': 'https://slope-game.online/',
+            'Tetris': 'https://tetris.com/play-tetris',
+            'Minecraft Classic': 'https://classic.minecraft.net/',
+            'Among Us': 'https://poki.com/en/g/among-us'
+        };
+
+        document.querySelectorAll('.game-card a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const gameTitle = this.closest('.game-card').querySelector('h3').textContent;
+                if (games[gameTitle]) {
+                    document.getElementById('modal-title').textContent = gameTitle;
+                    document.getElementById('game-iframe').src = games[gameTitle];
+                    document.getElementById('game-modal').classList.remove('hidden');
+                }
+            });
+        });
     </script>
+
+    <style>
+        .raindrop {
+            position: absolute;
+            width: 2px;
+            height: 15px;
+            background: rgba(174, 194, 224, 0.5);
+            animation: rain linear infinite;
+        }
+
+        @keyframes rain {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+    </style>
 </body>
 </html>
