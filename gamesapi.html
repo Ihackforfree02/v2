@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr Games - API Documentation</title>
+    <link rel="icon" type="image/x-icon" href="https://static.photos/gaming/200x200/1">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .code-block {
+            background-color: #1e293b;
+            color: #f8fafc;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        .endpoint-method {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-weight: bold;
+            font-family: monospace;
+        }
+        .get-method {
+            background-color: #4ade80;
+            color: #14532d;
+        }
+        .post-method {
+            background-color: #60a5fa;
+            color: #1e40af;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <i data-feather="code" class="w-8 h-8"></i>
+                    <span class="text-xl font-bold">Mr Games API</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="hover:text-indigo-200">Games</a>
+                    <a href="movies.html" class="hover:text-indigo-200">Movies</a>
+                    <a href="gamesapi.html" class="hover:text-indigo-200">API</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- API Hero Section -->
+    <section class="py-20 bg-gradient-to-r from-indigo-700 to-purple-800 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Mr Games API</h1>
+            <p class="text-xl md:text-2xl mb-8">Access our collection of 1000+ games programmatically</p>
+            <div class="max-w-2xl mx-auto">
+                <a href="#getting-started" class="bg-white text-indigo-600 hover:bg-gray-100 py-3 px-6 rounded-full inline-block font-medium mr-4">
+                    Get Started
+                </a>
+                <a href="#try-it" class="border-2 border-white text-white hover:bg-white hover:text-indigo-600 py-3 px-6 rounded-full inline-block font-medium">
+                    Try It Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started -->
+    <section id="getting-started" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8">Getting Started</h2>
+            <div class="prose max-w-4xl">
+                <p>Our API provides access to the complete Mr Games collection with simple HTTP requests. You'll need an API key to get started.</p>
+                
+                <h3 class="text-2xl font-bold mt-8 mb-4">1. Get Your API Key</h3>
+                <p>Sign up for a free account to get your API key:</p>
+                <div class="code-block mb-6">
+                    POST https://api.mrgames.pro/v1/auth/register<br>
+                    Content-Type: application/json<br><br>
+                    {<br>
+                    &nbsp;&nbsp;"email": "your@email.com",<br>
+                    &nbsp;&nbsp;"password": "yourpassword"<br>
+                    }
+                </div>
+                
+                <h3 class="text-2xl font-bold mt-8 mb-4">2. Make Your First Request</h3>
+                <p>Once you have your API key, you can start making requests:</p>
+                <div class="code-block">
+                    GET https://api.mrgames.pro/v1/games<br>
+                    Authorization: Bearer YOUR_API_KEY<br>
+                    Content-Type: application/json
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Endpoints -->
+    <section id="endpoints" class="py-12 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8">API Endpoints</h2>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="flex items-center mb-4">
+                    <span class="endpoint-method get-method mr-4">GET</span>
+                    <span class="font-mono text-lg">/v1/games</span>
+                </div>
+                <p class="mb-4">Retrieve a list of all available games with pagination support.</p>
+                
+                <h4 class="font-bold mb-2">Parameters</h4>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><span class="font-mono">page</span> - Page number (default: 1)</li>
+                    <li><span class="font-mono">limit</span> - Items per page (default: 20)</li>
+                    <li><span class="font-mono">category</span> - Filter by category</li>
+                    <li><span class="font-mono">search</span> - Search term</li>
+                </ul>
+                
+                <h4 class="font-bold mb-2">Example Request</h4>
+                <div class="code-block mb-4">
+                    GET https://api.mrgames.pro/v1/games?page=1&limit=5&category=action<br>
+                    Authorization: Bearer YOUR_API_KEY
+                </div>
+                
+                <h4 class="font-bold mb-2">Example Response</h4>
+                <div class="code-block">
+                    {<br>
+                    &nbsp;&nbsp;"success": true,<br>
+                    &nbsp;&nbsp;"data": [<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;{<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"id": "slope",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"title": "Slope",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"description": "Navigate a 3D course at high speeds!",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"category": "racing",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"image": "https://static.photos/gaming/640x360/1",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"url": "https://slope-game.online/",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"rating": 4.8<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;},<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;// 4 more games...<br>
+                    &nbsp;&nbsp;],<br>
+                    &nbsp;&nbsp;"pagination": {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"total": 1000,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"page": 1,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"limit": 5,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"pages": 200<br>
+                    &nbsp;&nbsp;}<br>
+                    }
+                </div>
+            </div>
+            
+            <!-- More endpoints would be documented here -->
+        </div>
+    </section>
+
+    <!-- Try It Section -->
+    <section id="try-it" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8">Try It Out</h2>
+            
+            <div class="bg-gray-100 rounded-lg p-6 mb-6">
+                <div class="flex mb-4">
+                    <select id="method-select" class="bg-white border border-gray-300 rounded-l px-4 py-2">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                    </select>
+                    <input type="text" id="endpoint-input" placeholder="/v1/games" class="flex-grow border-t border-b border-gray-300 px-4 py-2">
+                    <button id="send-request" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-r">Send</button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h4 class="font-bold mb-2">Headers</h4>
+                        <div class="bg-white rounded p-4">
+                            <div class="flex mb-2">
+                                <input type="text" value="Authorization" class="flex-1 border border-gray-300 px-2 py-1 rounded-l" readonly>
+                                <input type="text" value="Bearer YOUR_API_KEY" class="flex-2 border-t border-b border-r border-gray-300 px-2 py-1 rounded-r">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-2">Query Parameters</h4>
+                        <div class="bg-white rounded p-4">
+                            <div class="flex mb-2">
+                                <input type="text" placeholder="key" class="flex-1 border border-gray-300 px-2 py-1 rounded-l">
+                                <input type="text" placeholder="value" class="flex-2 border-t border-b border-r border-gray-300 px-2 py-1 rounded-r">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h4 class="font-bold mb-2">Response</h4>
+                <div id="response-output" class="code-block min-h-40">
+                    // Your API response will appear here
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Mr Games API</h3>
+                    <p class="text-gray-400">Programmatic access to our collection of 1000+ premium unblocked games.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">Games</a></li>
+                        <li><a href="movies.html" class="text-gray-400 hover:text-white">Movies</a></li>
+                        <li><a href="gamesapi.html" class="text-gray-400 hover:text-white">API Docs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">API Status</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2023 Mr Games API. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        feather.replace();
+        
+        // API Try It functionality
+        document.getElementById('send-request').addEventListener('click', function() {
+            const method = document.getElementById('method-select').value;
+            const endpoint = document.getElementById('endpoint-input').value;
+            
+            document.getElementById('response-output').textContent = 
+                `Sending ${method} request to ${endpoint}...\n\n` +
+                `(This is a demo - in a real implementation, this would make an actual API call)\n\n` +
+                `To use the real API, please sign up at https://api.mrgames.pro`;
+        });
+    </script>
+</body>
+</html>
