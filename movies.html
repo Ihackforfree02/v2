@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr Games - Movie Collection</title>
+    <link rel="icon" type="image/x-icon" href="https://static.photos/gaming/200x200/1">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .movie-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .movie-card {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <i data-feather="film" class="w-8 h-8"></i>
+                    <span class="text-xl font-bold">Mr Movies</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="hover:text-indigo-200">Games</a>
+                    <a href="#" class="hover:text-indigo-200">Movies</a>
+                    <a href="#trending" class="hover:text-indigo-200">Trending</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <section id="movies-hero" class="py-20 text-white relative overflow-hidden bg-gradient-to-r from-purple-900 to-indigo-800">
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Premium Movies Collection</h1>
+            <p class="text-xl md:text-2xl mb-8">Watch the latest blockbusters and classics for free!</p>
+            <div class="max-w-2xl mx-auto relative">
+                <input type="text" id="movie-search" placeholder="Search 500+ movies..." class="w-full py-4 px-6 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                <button id="movie-search-btn" class="absolute right-2 top-2 bg-indigo-700 hover:bg-indigo-800 text-white py-2 px-6 rounded-full flex items-center">
+                    <i data-feather="search" class="mr-2"></i> Search
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Movie Section -->
+    <section id="movies" class="py-12 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold">Movie Collection</h2>
+                <div class="flex items-center space-x-2">
+                    <span class="text-gray-600">Filter:</span>
+                    <select id="movie-filter" class="bg-white border border-gray-300 rounded py-1 px-2">
+                        <option value="all">All</option>
+                        <option value="action">Action</option>
+                        <option value="comedy">Comedy</option>
+                        <option value="sci-fi">Sci-Fi</option>
+                        <option value="horror">Horror</option>
+                        <option value="animation">Animation</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6" id="movies-grid">
+                <!-- Movies will be loaded dynamically -->
+            </div>
+            
+            <!-- Pagination -->
+            <div class="flex justify-center mt-8">
+                <nav class="flex items-center space-x-2">
+                    <a href="#" class="px-3 py-1 rounded bg-indigo-600 text-white">1</a>
+                    <a href="#" class="px-3 py-1 rounded hover:bg-gray-200">2</a>
+                    <a href="#" class="px-3 py-1 rounded hover:bg-gray-200">3</a>
+                    <a href="#" class="px-3 py-1 rounded hover:bg-gray-200">4</a>
+                    <a href="#" class="px-3 py-1 rounded hover:bg-gray-200">5</a>
+                    <span class="px-2">...</span>
+                    <a href="#" class="px-3 py-1 rounded hover:bg-gray-200">10</a>
+                    <a href="#" class="px-3 py-1 rounded hover:bg-gray-200">
+                        <i data-feather="chevron-right" class="w-4 h-4"></i>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </section>
+    <!-- Movie Modal -->
+    <div id="movie-modal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-gray-900 rounded-lg w-full max-w-6xl max-h-screen overflow-hidden border-4 border-indigo-500">
+            <div class="flex justify-between items-center bg-indigo-700 text-white p-4">
+                <h3 id="movie-modal-title" class="text-xl font-bold flex items-center">
+                    <i data-feather="film" class="w-5 h-5 mr-2"></i>
+                    <span id="movie-title">Loading Movie...</span>
+                </h3>
+                <div class="flex items-center space-x-4">
+                    <button id="movie-fullscreen-btn" class="text-white hover:text-indigo-200" title="Fullscreen">
+                        <i data-feather="maximize"></i>
+                    </button>
+                    <button id="close-movie-modal" class="text-white hover:text-indigo-200" title="Close">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="aspect-w-16 aspect-h-9 w-full bg-black">
+                <iframe id="movie-iframe" class="w-full h-[70vh]" frameborder="0" allowfullscreen allow="autoplay; fullscreen"></iframe>
+            </div>
+            <div class="bg-gray-800 p-4 text-white">
+                <div class="flex justify-between items-center">
+                    <div id="movie-meta" class="text-sm">
+                        <span id="movie-year">2023</span> • 
+                        <span id="movie-runtime">120 min</span> • 
+                        <span id="movie-rating">PG-13</span>
+                    </div>
+                    <div>
+                        <span id="movie-imdb" class="flex items-center">
+                            <i data-feather="star" class="w-4 h-4 text-yellow-400 fill-current mr-1"></i>
+                            <span>7.5/10</span>
+                        </span>
+                    </div>
+                </div>
+                <p id="movie-plot" class="mt-2 text-gray-300">A brief description of the movie plot will appear here.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        feather.replace();
+        
+        // Movie data
+        const movies = [
+            {
+                title: "Spider-Man: No Way Home",
+                image: "https://static.photos/movie/320x240/1",
+                genres: ["Action", "Adventure", "Sci-Fi"],
+                year: "2021",
+                runtime: "148 min",
+                rating: "PG-13",
+                imdb: "8.2",
+                plot: "With Spider-Man's identity now revealed, Peter asks Doctor Strange for help. When a spell goes wrong, dangerous foes from other worlds start to appear, forcing Peter to discover what it truly means to be Spider-Man.",
+                url: "https://www.netflix.com/title/81435684"
+            },
+            {
+                title: "The Batman",
+                image: "https://static.photos/movie/320x240/2",
+                genres: ["Action", "Crime", "Drama"],
+                year: "2022",
+                runtime: "176 min",
+                rating: "PG-13",
+                imdb: "7.9",
+                plot: "When a sadistic serial killer begins murdering key political figures in Gotham, Batman is forced to investigate the city's hidden corruption and question his family's involvement.",
+                url: "https://www.hbomax.com/feature/urn:hbo:feature:GYiKQxA8XC5NtLwEAAAB_"
+            },
+            // Add more movies following same structure
+        ];
+
+        // Load movies
+        const moviesGrid = document.getElementById('movies-grid');
+        
+        movies.forEach(movie => {
+            const movieCard = `
+                <div class="movie-card bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow" data-genres="${movie.genres.join(',')}">
+                    <div class="relative">
+                        <img src="${movie.image}" alt="${movie.title}" class="w-full h-48 object-cover">
+                        <div class="absolute top-2 right-2 bg-yellow-500 text-black text-xs px-2 py-1 rounded font-bold">${movie.imdb}</div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2">${movie.title}</h3>
+                        <p class="text-gray-600 text-sm mb-3">${movie.genres.join(', ')}</p>
+                        <a href="#" data-movie='${JSON.stringify(movie).replace(/'/g, "\\'")}' class="watch-btn bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded inline-block">Watch Now</a>
+                    </div>
+                </div>
+            `;
+            moviesGrid.innerHTML += movieCard;
+        });
+
+        // Watch movie handler
+        document.addEventListener('click', function(e) {
+            if(e.target.classList.contains('watch-btn')) {
+                e.preventDefault();
+                const movie = JSON.parse(e.target.dataset.movie);
+                
+                document.getElementById('movie-modal-title').textContent = movie.title;
+                document.getElementById('movie-title').textContent = movie.title;
+                document.getElementById('movie-iframe').src = movie.url;
+                document.getElementById('movie-year').textContent = movie.year;
+                document.getElementById('movie-runtime').textContent = movie.runtime;
+                document.getElementById('movie-rating').textContent = movie.rating;
+                document.getElementById('movie-imdb').innerHTML = `<i data-feather="star" class="w-4 h-4 text-yellow-400 fill-current mr-1"></i><span>${movie.imdb}/10</span>`;
+                document.getElementById('movie-plot').textContent = movie.plot;
+                
+                document.getElementById('movie-modal').classList.remove('hidden');
+                feather.replace();
+            }
+        });
+
+        // Close movie modal
+        document.getElementById('close-movie-modal').addEventListener('click', function() {
+            document.getElementById('movie-modal').classList.add('hidden');
+            document.getElementById('movie-iframe').src = '';
+        });
+
+        // Fullscreen for movie modal
+        document.getElementById('movie-fullscreen-btn').addEventListener('click', function() {
+            const iframe = document.getElementById('movie-iframe');
+            if (iframe.requestFullscreen) {
+                iframe.requestFullscreen();
+            } else if (iframe.webkitRequestFullscreen) {
+                iframe.webkitRequestFullscreen();
+            } else if (iframe.msRequestFullscreen) {
+                iframe.msRequestFullscreen();
+            }
+        });
+
+        // Movie filter
+        document.getElementById('movie-filter').addEventListener('change', function() {
+            const filter = this.value;
+            document.querySelectorAll('.movie-card').forEach(card => {
+                if (filter === 'all' || card.dataset.genres.includes(filter)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Movie search
+        document.getElementById('movie-search-btn').addEventListener('click', searchMovies);
+        document.getElementById('movie-search').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') searchMovies();
+        });
+
+        function searchMovies() {
+            const query = document.getElementById('movie-search').value.toLowerCase();
+            document.querySelectorAll('.movie-card').forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                if (title.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
